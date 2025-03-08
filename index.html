@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飲料製作小遊戲</title>
+    <script>
+        const drinksData = [
+            {
+        "品名": "紅/綠/普洱",
+        "冰": "尖",
+        "糖": 12,
+        "條件": "各半",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 240
+        }
+    },
+    {
+        "品名": "珍珠  紅/綠/普洱",
+        "冰": "平",
+        "糖": 10,
+        "條件": "各半",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 180
+        }
+    },
+    {
+        "品名": "三韻/四季春/花沫烏",
+        "冰": "尖",
+        "糖": 10,
+        "條件": "各半",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 240
+        }
+    },
+    {
+        "品名": "三十三茶王",
+        "冰": "尖",
+        "糖": 10,
+        "條件": "各半",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 240
+        }
+    },
+    {
+        "品名": "紅水烏龍",
+        "冰": "平",
+        "糖": 10,
+        "條件": "水",
+        "檔速": 1,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 350,
+            "水": 50
+        }
+    },
+    {
+        "品名": "熱原純茶(去/去)",
+        "冰": "0",
+        "糖": 0,
+        "檔速": 1,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 300,
+            "水": 60
+        }
+    },
+    {
+        "品名": "阿源楊桃(紅/綠)",
+        "冰": "尖",
+        "糖": 3,
+        "條件": "各半",
+        "檔速": 3,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 150,
+            "水": 50,
+            "楊桃": 80
+        }
+    },
+    {
+        "品名": "楊桃雷孟",
+        "冰": "尖",
+        "糖": 5,
+        "條件": "水",
+        "檔速": 3,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 50,
+            "水": 150,
+            "楊桃": 80
+        }
+    },
+    {
+        "品名": "冬瓜雷孟",
+        "冰": "平",
+        "糖": 5,
+        "條件": "水",
+        "檔速": 1,
+        "杯內副料": "檸檬 30 (回放)",
+        "成分": {
+            "水": 250,
+            "冬瓜": 50
+        }
+    },
+    {
+        "品名": "冬瓜茶王",
+        "冰": "平",
+        "糖": 4,
+        "條件": "茶",
+        "檔速": 1,
+        "杯內副料": "無",
+        "成分": {
+            "水": 150,
+            "茶": 100,
+            "冬瓜": 50
+        }
+    },
+    {
+        "品名": "豆漿紅茶",
+        "冰": "平",
+        "糖": 11,
+        "條件": "各半",
+        "檔速": 1,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 150,
+            "豆漿": 200
+        }
+        
+    },
+    {
+        "品名": "甘蔗四季春",
+        "冰": "平",
+        "糖": 9,
+        "檔速": 1,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 160,
+            "甘蔗": 140
+        }
+    },
+    {
+        "品名": "奶茶\n(紅/綠/茶王)",
+        "冰": "尖",
+        "糖": 11,
+        "條件": "茶",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 220,
+            "奶精": 3
+        }
+    },
+    {
+        "品名": "碎銀普洱奶茶",
+        "冰": "尖",
+        "糖": 11,
+        "條件": "茶",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 200,
+            "奶精": 4
+        }
+    },
+    {
+        "品名": "珍珠奶茶\n(紅/綠/茶王)",
+        "冰": "平",
+        "糖": 9,
+        "條件": "茶",
+        "檔速": 2,
+        "杯內副料": "珍珠  140±5 克",
+        "成分": {
+            "茶": 180,
+            "奶精": 3
+        }
+    },
+    {
+        "品名": "碎銀普洱珍珠奶茶",
+        "冰": "平",
+        "糖": 8,
+        "條件": "茶",
+        "檔速": 2,
+        "杯內副料": "珍珠  140±5 克",
+        "成分": {
+            "茶": 180,
+            "奶精": 3
+        }
+    },
+    {
+        "品名": "鮮果百香(紅/綠)",
+        "冰": "平",
+        "糖": 15,
+        "條件": "各半",
+        "檔速": 2,
+        "杯內副料": "百香  60",
+        "成分": {
+            "茶": 200,
+        }
+    },
+    {
+        "品名": "翡翠雷夢",
+        "冰": "尖",
+        "糖": 16,
+        "條件": "各半",
+        "檔速": 2,
+        "杯內副料": "檸檬 50 (回放)",
+        "成分": {
+            "茶": 200
+        }
+    },
+    {
+        "品名": "香柚雷夢綠",
+        "冰": 8,
+        "糖": 7,
+        "條件": "各半",
+        "檔速": 3,
+        "杯內副料": "蘆薈 80±5g",
+        "成分": {
+            "茶": 170,
+            "水": 30,
+            "檸檬": 20,
+            "柚子": 2
+        }
+    },
+    {
+        "品名": "香柚雷孟綠(去冰)",
+        "冰": 5,
+        "糖": 7,
+        "條件": "各半",
+        "檔速": 3,
+        "杯內副料": "蘆薈 80±5g",
+        "成分": {
+            "茶": 170,
+            "水": 30,
+            "檸檬": 20,
+            "柚子": 2
+        }
+    },
+    {
+        "品名": "柳丁翡翠",
+        "冰": "平",
+        "糖": 13,
+        "條件": "各半",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "柳丁": 140,
+            "茶": 140
+        }
+    },
+    {
+        "品名": "蘋果紅萱",
+        "冰": "平",
+        "糖": 11,
+        "條件": "各半",
+        "檔速": 1,
+        "杯內副料": "無",
+        "成分": {
+            "蘋果": 140,
+            "茶": 160
+        }
+    },
+    {
+        "品名": "紅柚翡翠",
+        "冰": 8,
+        "糖": 9,
+        "檔速": 2,
+        "杯內副料": "紅柚 150",
+        "成分": {
+            "茶": 170
+        }
+    },
+    {
+        "品名": "旺梨四季春",
+        "冰": "平",
+        "糖": 12,
+        "條件": "茶",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 160,
+            "鳳梨": 100
+        }
+    },
+    {
+        "品名": "葡薈四季春",
+        "冰": "平",
+        "糖": 12,
+        "條件": "茶",
+        "檔速": 2,
+        "杯內副料": "蘆薈 110±5g",
+        "成分": {
+            "茶": 160,
+            "葡萄": 80
+        }
+    },
+    {
+        "品名": "蜜桃烏龍",
+        "冰": "平",
+        "糖": 10,
+        "條件": "各半",
+        "檔速": 2,
+        "杯內副料": "蜜桃 100",
+        "成分": {
+            "茶": 200
+        }
+    },
+    {
+        "品名": "鮮乳茶\n(紅/綠)",
+        "冰": 8,
+        "糖": 12,
+        "條件": "茶",
+        "檔速": 2,
+        "杯內副料": "鮮奶150",
+        "成分": {
+            "茶": 250
+        }
+    },
+    {
+        "品名": "碎銀普洱鮮乳",
+        "冰": "尖",
+        "糖": 12,
+        "條件": "茶",
+        "檔速": 1,
+        "杯內副料": "鮮奶 150",
+        "成分": {
+            "茶": 200
+        }
+    },
+    {
+        "品名": "冬瓜鮮乳",
+        "冰": "平",
+        "糖": 3,
+        "條件": "水",
+        "檔速": 1,
+        "杯內副料": "無",
+        "成分": {
+            "水": 150,
+            "冬瓜": 50,
+            "鮮奶": 150
+        }
+    },
+    {
+        "品名": "鮮乳茶\n(濃乳/紅烏)",
+        "冰": 8,
+        "糖": 12,
+        "條件": "茶",
+        "檔速": 1,
+        "杯內副料": "鮮奶 150",
+        "成分": {
+            "茶": 300
+        }
+    },
+    {
+        "品名": "巧克鮮乳茶",
+        "冰": 8,
+        "糖": 12,
+        "條件": "水",
+        "檔速": 2,
+        "杯內副料": "鮮奶 120",
+        "成分": {
+            "巧克力水": 100,
+            "濃乳": 150
+        }
+    },
+    {
+        "品名": "蜂蜜綠茶",
+        "冰": "尖",
+        "糖": 0,
+        "條件": "水",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "水": 100,
+            "茶": 140,
+            "蜜": 40
+        }
+    },
+    {
+        "品名": "蜂蜜四季春",
+        "冰": "尖",
+        "糖": 0,
+        "條件": "茶",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "茶": 280,
+            "蜜": 40
+        }
+    },
+    {
+        "品名": "蜂蜜雷夢",
+        "冰": "尖",
+        "糖": 8,
+        "條件": "水",
+        "檔速": 3,
+        "杯內副料": "無",
+        "成分": {
+            "水": 210,
+            "蜜": 40,
+            "檸檬": 30
+        }
+    },
+    {
+        "品名": "雷夢蘆薈蜜",
+        "冰": "平",
+        "糖": 7,
+        "條件": "水",
+        "檔速": 3,
+        "杯內副料": "蘆薈 110±5g",
+        "成分": {
+            "水": 160,
+            "蜜": 40,
+            "檸檬": 30
+        }
+    },
+    {
+        "品名": "三韻奶茶",
+        "冰": "尖",
+        "糖": 0,
+        "條件": "茶",
+        "檔速": 2,
+        "杯內副料": "無",
+        "成分": {
+            "水": 40,
+            "蜜": 40,
+            "茶": 220,
+            "奶精": 2
+        }
+    }
+
+
+        ];
+
+        const iceOptions = ["正常", "少冰", "微冰", "去冰"];
+        const sugarOptions = ["正常", "八分", "半糖", "三分", "一分", "去糖"];
+
+        let currentQuestion = {};
+
+        function getRandomQuestion() {
+            const randomDrink = drinksData[Math.floor(Math.random() * drinksData.length)];
+            const randomIce = iceOptions[Math.floor(Math.random() * iceOptions.length)];
+            const randomSugar = sugarOptions[Math.floor(Math.random() * sugarOptions.length)];
+
+            currentQuestion = { ...randomDrink, 冰塊: randomIce, 甜度: randomSugar };
+            document.getElementById("drink-name").textContent = currentQuestion.品名;
+            document.getElementById("ice-option").textContent = currentQuestion.冰塊;
+            document.getElementById("sugar-option").textContent = currentQuestion.甜度;
+        }
+
+        function adjustSugar(sugarOption) {
+            switch (sugarOption) {
+                case "八分": return -1;
+                case "半糖": return -2;
+                case "三分": return -3;
+                case "一分": return -5;
+                case "去糖": return -currentQuestion.糖;
+                default: return 0;
+            }
+        }
+
+        function adjustTeaAndWater(option, amount) {
+            if (option === "茶") return { 茶: amount, 水: 0 };
+            if (option === "各半") return { 茶: amount / 2, 水: amount / 2 };
+            return { 茶: 0, 水: amount };
+        }
+
+        function checkAnswer() {
+            const selectedOptions = {
+                冰塊: document.getElementById("冰塊選擇").value,
+                甜度: parseInt(document.getElementById("甜度").value) || 0,
+                茶湯_茶: parseInt(document.getElementById("茶湯_茶").value) || 0,
+                茶湯_水: parseInt(document.getElementById("茶湯_水").value) || 0,
+                條件: document.querySelector("input[name='條件']:checked")?.value,
+                檔速: parseInt(document.getElementById("檔速").value) || 0,
+                杯內副料: document.getElementById("杯內副料").value
+            };
+
+            let correct = true;
+            let correctAnswer = "";
+
+            // 取得 drinksData 中的冰作為正確答案
+            const correctIce = currentQuestion.冰;
+
+            // 調整糖度
+            const sugarAdjustment = adjustSugar(currentQuestion.甜度);
+            let adjustedSugar = currentQuestion.糖 + sugarAdjustment;
+            if (adjustedSugar < 0) {
+                adjustedSugar = 0;
+            }
+            if (selectedOptions.甜度 !== adjustedSugar) {
+                correct = false;
+                correctAnswer += `甜度: ${adjustedSugar}\n`;
+            }
+
+            // 調整茶湯
+            let teaAdjustment = 0, waterAdjustment = 0;
+
+            if (currentQuestion.甜度 !== "正常") {
+                const adjustment = adjustTeaAndWater(currentQuestion.條件, 20);
+                teaAdjustment += adjustment.茶;
+                waterAdjustment += adjustment.水;
+            }
+
+            if (currentQuestion.冰塊 !== "正常") {
+                const adjustment = adjustTeaAndWater(currentQuestion.條件, 20);
+                teaAdjustment += adjustment.茶;
+                waterAdjustment += adjustment.水;
+            }
+
+            if (selectedOptions.茶湯_茶 !== (currentQuestion?.成分?.茶 || 0) + teaAdjustment ||
+                selectedOptions.茶湯_水 !== (currentQuestion?.成分?.水 || 0) + waterAdjustment) {
+                correct = false;
+                correctAnswer += `茶湯: 茶 ${currentQuestion?.成分?.茶 + teaAdjustment || 0}, 水 ${currentQuestion?.成分?.水 + waterAdjustment || 0}\n`;
+            }
+
+            for (let key of ["冰塊", "條件", "檔速", "杯內副料"]) {
+                if (key === "冰塊" && selectedOptions[key] !== correctIce) {
+                    correct = false;
+                    correctAnswer += `冰塊: ${correctIce}\n`;
+                } else if (key !== "冰塊" && selectedOptions[key] !== currentQuestion[key]) {
+                    correct = false;
+                    correctAnswer += `${key}: ${currentQuestion[key]}\n`;
+                }
+            }
+
+            if (correct) {
+                alert("答對了！下一題");
+                getRandomQuestion();
+            } else {
+                alert("答錯了！正確答案:\n" + correctAnswer);
+                getRandomQuestion();
+            }
+        }
+    </script>
+</head>
+<body onload="getRandomQuestion()">
+    <h2 id="drink-name">隨機飲料</h2>
+    <p>冰塊: <span id="ice-option"></span></p>
+    <p>糖度: <span id="sugar-option"></span></p>
+    <div>
+        <h3>冰塊</h3>
+        <select id="冰塊選擇" onchange="document.getElementById('冰塊數字').style.display = this.value === '數字' ? 'inline' : 'none'">
+            <option value="尖">尖</option>
+            <option value="平">平</option>
+            <option value="數字">填入數字</option>
+        </select>
+        <input type="number" id="冰塊數字" style="display: none;" placeholder="輸入數字">
+
+    </div>
+    <div>
+        <h3>甜度</h3>
+        <input type="number" id="甜度" min="0" max="100" placeholder="輸入甜度">
+    </div>
+    <div>
+        <h3>茶湯</h3>
+        <input type="number" id="茶湯_茶" placeholder="茶: 輸入數字">
+        <input type="number" id="茶湯_水" placeholder="水: 輸入數字">
+    </div>
+    <div>
+        <h3>條件</h3>
+        <label><input type="radio" name="條件" value="茶"> 茶</label>
+        <label><input type="radio" name="條件" value="水"> 水</label>
+        <label><input type="radio" name="條件" value="各半"> 各半</label>
+    </div>
+    <div>
+        <h3>檔速</h3>
+        <input type="number" id="檔速" min="0" max="10" placeholder="輸入檔速">
+    </div>
+    <div>
+        <h3>杯內副料</h3>
+<select id="杯內副料">
+    <option value="無">無</option>
+    <option value="檸檬 30 (回放)">檸檬 30 (回放)</option>
+    <option value="珍珠  140±5 克">珍珠  140±5 克</option>
+    <option value="百香  60">百香  60</option>
+    <option value="檸檬 50 (回放)">檸檬 50 (回放)</option>
+    <option value="蘆薈 80±5g">蘆薈 80±5g</option>
+    <option value="紅柚 150">紅柚 150</option>
+    <option value="蘆薈 110±5g">蘆薈 110±5g</option>
+    <option value="蜜桃 100">蜜桃 100</option>
+    <option value="鮮奶 150">鮮奶 150</option>
+    <option value="鮮奶 120">鮮奶 120</option>
+</select>
+    </div>
+    <button onclick="checkAnswer()">提交</button>
+</body>
+</html>
